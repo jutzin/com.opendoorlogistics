@@ -23,6 +23,7 @@ import com.opendoorlogistics.api.components.ComponentExecutionApi.ModalDialogRes
 import com.opendoorlogistics.api.components.ODLComponent;
 import com.opendoorlogistics.api.tables.ODLDatastore;
 import com.opendoorlogistics.api.tables.ODLTableAlterable;
+import com.opendoorlogistics.api.tables.TableFlags;
 import com.opendoorlogistics.api.ui.Disposable;
 import com.opendoorlogistics.core.scripts.elements.Option;
 import com.opendoorlogistics.core.scripts.elements.Script;
@@ -115,7 +116,15 @@ class ScriptExecutionTask {
 		writeRecorder = new WriteRecorderDecorator<>(ODLTableAlterable.class, workingDatastoreCopy);
 
 		// Place within a simple decorator where we can switch back to the main ds afterwards for launched controls
-		simple = new SimpleDecorator<>(ODLTableAlterable.class, writeRecorder);
+		simple = new SimpleDecorator<ODLTableAlterable>(ODLTableAlterable.class, writeRecorder){
+			@Override
+			protected long getRowFlags(int tableId, long rowId) {
+				long ret = super.getRowFlags(tableId, rowId);
+				ret |= TableFlags.FLAG_ROW_COMES_FROM_EXTERNAL_DS;
+				return ret;
+			}
+	
+		};
 
 		// Create the progress on EDT as well but don't wait for it as it blocks the execution..
 		// If we're doing an automatic refresh wait longer to show the progress dialog, but still show

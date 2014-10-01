@@ -111,5 +111,10 @@ public interface TableFlags {
 	 * original table name, not the destination table name
 	 */
 	public static final long FLAG_TABLE_NAME_USE_SOURCE = 1<<18;
+	
+	/**
+	 * Does the row come from the external ds, or one internal to the script?
+	 */
+	public static final long FLAG_ROW_COMES_FROM_EXTERNAL_DS = 1<<19;
 
 }

@@ -56,28 +56,28 @@ class ExecutionUtils {
 		return null;
 	}
 
-	/**
-	 * Wrap the datastore to give it the correct edit / not edit flags
-	 * 
-	 * @param isEditable
-	 * @return
-	 */
-	static ODLDatastoreAlterable<ODLTableAlterable> wrapDsWithEditableFlags(ODLDatastoreUndoable<ODLTableAlterable> ds) {
-		return new SimpleDecorator<ODLTableAlterable>(ODLTableAlterable.class, ds) {
-			@Override
-			protected long getFlags(int tableId) {
-
-				long flags = super.getFlags(tableId);
-
-				// hack .. edit permissions can sometimes be turned off by accident if we copy a table
-				// to the main datastore etc.. This ensures we always have them for the external.
-				flags |= TableFlags.UI_SET_INSERT_DELETE_PERMISSION_FLAGS;
-
-				return flags;
-			}
-		};
-
-	}
+//	/**
+//	 * Wrap the datastore to give it the correct edit / not edit flags
+//	 * 
+//	 * @param isEditable
+//	 * @return
+//	 */
+//	static ODLDatastoreAlterable<ODLTableAlterable> wrapDsWithEditableFlags(ODLDatastoreUndoable<ODLTableAlterable> ds) {
+//		return new SimpleDecorator<ODLTableAlterable>(ODLTableAlterable.class, ds) {
+//			@Override
+//			protected long getFlags(int tableId) {
+//
+//				long flags = super.getFlags(tableId);
+//
+//				// hack .. edit permissions can sometimes be turned off by accident if we copy a table
+//				// to the main datastore etc.. This ensures we always have them for the external.
+//				flags |= TableFlags.UI_SET_INSERT_DELETE_PERMISSION_FLAGS;
+//
+//				return flags;
+//			}
+//		};
+//
+//	}
 
 	static void throwIfNotOnEDT() {
 		// must be on EDT
